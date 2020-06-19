@@ -1,0 +1,13 @@
+.container {
+  margin: 30px;
+  height: 100%;
+  display: flex;
+}
+
+.sideNav {
+  max-width: 40%;
+  background: whitesmoke;
+  margin-right: 20px;
+  height: 80%;
+  padding: 10px;
+}

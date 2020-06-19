@@ -1,0 +1,18 @@
+<mat-accordion class="sidenav">
+  <mat-expansion-panel *ngFor="let item of menuItem">
+    <mat-expansion-panel-header [expandedHeight]="'48px'">
+      <mat-panel-title>
+        {{ item.name }}
+      </mat-panel-title>
+    </mat-expansion-panel-header>
+    <mat-nav-list>
+      <mat-list-item
+        *ngFor="let child of item['children']"
+        [routerLink]="child['navigation']"
+        routerLinkActive="active"
+      >
+        {{ child.name }}
+      </mat-list-item>
+    </mat-nav-list>
+  </mat-expansion-panel>
+</mat-accordion>
