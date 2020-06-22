@@ -1,18 +1,57 @@
-<mat-accordion class="sidenav">
-  <mat-expansion-panel *ngFor="let item of menuItem">
-    <mat-expansion-panel-header [expandedHeight]="'48px'">
-      <mat-panel-title>
-        {{ item.name }}
-      </mat-panel-title>
-    </mat-expansion-panel-header>
-    <mat-nav-list>
+<mat-form-field class="searchField" appearance="outline">
+  <mat-label>Search</mat-label>
+  <input
+    matInput
+    type="text"
+    (input)="menuSearch($event)"
+    [(ngModel)]="searchValue"
+  />
+  <button
+    mat-button
+    *ngIf="searchValue; else elseIcon"
+    matSuffix
+    mat-icon-button
+    aria-label="Clear"
+    (click)="searchValue = ''"
+  >
+    <mat-icon>close</mat-icon>
+  </button>
+  <ng-template #elseIcon><mat-icon matSuffix>search</mat-icon></ng-template>
+</mat-form-field>
+<mat-accordion *ngIf="!searchValue; else elseNavList" class="sidenav">
+  <ng-container *ngFor="let item of menuItem; let first = first">
+    <mat-expansion-panel [expanded]="first">
+      <mat-expansion-panel-header [expandedHeight]="'48px'">
+        <mat-panel-title>
+          {{ item.name }}
+        </mat-panel-title>
+      </mat-expansion-panel-header>
+      <mat-nav-list>
+        <mat-list-item
+          *ngFor="let child of item['children']"
+          [routerLink]="child['navigation']"
+          routerLinkActive="active"
+        >
+          {{ child.name }}
+        </mat-list-item>
+      </mat-nav-list>
+    </mat-expansion-panel>
+  </ng-container>
+</mat-accordion>
+<ng-template #elseNavList>
+  <mat-card style="padding: 0 !important; background-color: whitesmoke;">
+    <mat-nav-list *ngIf="searchMenuItem.length > 0; else noRecord">
       <mat-list-item
-        *ngFor="let child of item['children']"
-        [routerLink]="child['navigation']"
+        *ngFor="let menu of searchMenuItem"
+        [routerLink]="menu['navigation']"
         routerLinkActive="active"
+        (click)="searchValue = ''"
       >
-        {{ child.name }}
+        {{ menu.name }}
       </mat-list-item>
     </mat-nav-list>
-  </mat-expansion-panel>
-</mat-accordion>
+    <ng-template #noRecord>
+      <div style="padding: 10px 15px;">No Match</div>
+    </ng-template>
+  </mat-card>
+</ng-template>
