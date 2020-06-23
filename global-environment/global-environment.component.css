@@ -1,0 +1,55 @@
+.global-environment-container {
+  height: 93%;
+  overflow: hidden;
+}
+
+table {
+  width: 100%;
+}
+
+th, td {
+  overflow: hidden;
+  width: 200px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.toolBar {
+  height: 42px;
+}
+
+.buttonGrp {
+  width: 100%;
+}
+
+.toolBarIcon {
+  font-size: 18px;
+  line-height: 20px;
+  margin-right: 2px;
+}
+
+.buttonGrp button:hover {
+  background-color: #e9ecef;
+}
+
+.buttonGrp button {
+  width: auto;
+  padding: 0 5px;
+}
+
+.rowSelected {
+  background-color: #e9ecef;
+}
+
+.tableRow:hover {
+  background-color: #e9ecef;
+}
+
+.formGrp {
+  height: 35px;
+}
+
+.table-container {
+  max-height: 90.9%;
+  overflow: auto;
+}

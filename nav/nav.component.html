@@ -1,0 +1,149 @@
+<div class="main-container" [class.mobile-container]="mobileQuery.matches">
+  <mat-toolbar class="headerBar">
+    <button mat-icon-button (click)="snav.toggle(); toggleIcon = !toggleIcon">
+      <mat-icon>{{
+        toggleIcon ? "arrow_back_ios" : "arrow_forward_ios"
+      }}</mat-icon>
+    </button>
+    <img src="./assets/images/KLA_logo.png" alt="logo" class="logo" />
+    <h1 class="title">MACH Central (Klarity)</h1>
+    <div class="header_mainContent"></div>
+    <mat-icon>help</mat-icon>
+    <button type="button" mat-icon-button>
+      <mat-icon>account_circle</mat-icon>
+    </button>
+    <span class="subTitle">User</span>
+  </mat-toolbar>
+  <mat-sidenav-container
+    class="sidenav-container"
+    [style.marginTop.px]="mobileQuery.matches ? 56 : 0"
+  >
+    <mat-sidenav
+      #snav
+      class="sidenav"
+      [opened]="true"
+      [mode]="mobileQuery.matches ? 'over' : 'side'"
+      [fixedInViewport]="mobileQuery.matches"
+      fixedTopGap="56"
+    >
+      <mat-form-field class="searchField" appearance="outline">
+        <mat-label>Search</mat-label>
+        <input
+          matInput
+          type="text"
+          (input)="menuSearch($event)"
+          [formControl]="searchValue"
+        />
+        <button
+          mat-button
+          *ngIf="searchValue.value; else elseIcon"
+          matSuffix
+          mat-icon-button
+          aria-label="Clear"
+          (click)="clearSearch()"
+        >
+          <mat-icon>close</mat-icon>
+        </button>
+        <ng-template #elseIcon>
+          <mat-icon matSuffix>search</mat-icon>
+        </ng-template>
+      </mat-form-field>
+      <mat-accordion
+        *ngIf="!searchValue.value; else elseNavList"
+        class="sidenav"
+      >
+        <ng-container *ngFor="let item of menuItem; let first = first">
+          <mat-expansion-panel [expanded]="first">
+            <mat-expansion-panel-header [expandedHeight]="'48px'">
+              <mat-panel-title>
+                {{ item.name }}
+              </mat-panel-title>
+            </mat-expansion-panel-header>
+            <mat-nav-list>
+              <mat-list-item
+                *ngFor="let child of item['children']"
+                [routerLink]="child['navigation']"
+                routerLinkActive="active"
+              >
+                {{ child.name }}
+              </mat-list-item>
+            </mat-nav-list>
+          </mat-expansion-panel>
+        </ng-container>
+      </mat-accordion>
+      <ng-template #elseNavList>
+        <mat-card style="padding: 0 !important; background-color: whitesmoke;">
+          <mat-nav-list *ngIf="searchMenuItem.length > 0; else noRecord">
+            <mat-list-item
+              *ngFor="let menu of searchMenuItem"
+              [routerLink]="menu['navigation']"
+              routerLinkActive="active"
+              (click)="clearSearch()"
+            >
+              {{ menu.name }}
+            </mat-list-item>
+          </mat-nav-list>
+          <ng-template #noRecord>
+            <div style="padding: 10px 15px;">No Match</div>
+          </ng-template>
+        </mat-card>
+      </ng-template>
+      <!-- <mat-accordion class="sidenav">
+        <ng-container *ngFor="let item of menuItem; let first = first">
+          <mat-expansion-panel [expanded]="first">
+            <mat-expansion-panel-header [expandedHeight]="'48px'">
+              <mat-panel-title>
+                {{ item.name }}
+              </mat-panel-title>
+            </mat-expansion-panel-header>
+            <mat-nav-list>
+              <mat-list-item
+                *ngFor="let child of item['children']"
+                [routerLink]="child['navigation']"
+                routerLinkActive="active"
+              >
+                {{ child.name }}
+              </mat-list-item>
+            </mat-nav-list>
+          </mat-expansion-panel>
+        </ng-container>
+      </mat-accordion> -->
+      <!-- <mat-tree [dataSource]="dataSource" [treeControl]="treeControl">
+        <mat-tree-node *matTreeNodeDef="let node" matTreeNodePadding>
+          <button mat-icon-button disabled></button>
+          <a
+            class="menuItemLink"
+            (click)="onSelectMenu(node.name)"
+            [class.itemSelected]="node.name === selectedItem"
+            [routerLinkActive]="['active']"
+            [routerLink]="node['navigation']"
+            >{{ node.name }}</a
+          >
+        </mat-tree-node>
+        <mat-tree-node
+          *matTreeNodeDef="let node; when: hasChild"
+          matTreeNodePadding
+        >
+          <button
+            mat-icon-button
+            matTreeNodeToggle
+            [attr.aria-label]="'toggle ' + node.name"
+          >
+            <mat-icon class="mat-icon-rtl-mirror">
+              {{
+                treeControl.isExpanded(node) ? "expand_more" : "chevron_right"
+              }}
+            </mat-icon>
+          </button>
+          {{ node.name }}
+        </mat-tree-node>
+      </mat-tree> -->
+    </mat-sidenav>
+    <mat-sidenav-content>
+      <div class="container">
+        <router-outlet></router-outlet>
+      </div>
+    </mat-sidenav-content>
+  </mat-sidenav-container>
+  <mat-toolbar class="mainFooter"></mat-toolbar>
+</div>

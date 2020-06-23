@@ -1,0 +1,111 @@
+.logo {
+  width: 7%;
+  margin: auto;
+}
+
+.accountBlock {
+  float: right;
+}
+
+.header_mainContent {
+  flex: 1 1 auto;
+}
+
+.menuItemLink {
+  text-decoration: none;
+  color: rgba(0, 0, 0, 0.87);
+}
+
+.menuItemLink:active {
+  font-weight: 700;
+}
+
+.menuItemLink:hover {
+  font-weight: 700;
+}
+
+.itemSelected {
+  font-weight: 700;
+}
+
+.container {
+  height: 94.5%;
+  padding: 1%;
+}
+
+.main-container {
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+
+.mobile-container .headerBar {
+  position: fixed;
+  z-index: 2;
+}
+
+h1.headerText {
+  margin-left: 8px;
+}
+
+.sidenav-container {
+  flex: 1;
+}
+
+.mobile-container .sidenav-container {
+  flex: 1 0 auto;
+}
+
+.sidenav {
+  width: 300px;
+}
+
+.headerBar {
+  background: #41007f;
+  color: #ffffff;
+}
+
+.mainFooter {
+  background: #41007f;
+  color: #ffffff;
+  height: 5%;
+}
+
+mat-expansion-panel {
+  margin-bottom: 10px;
+}
+mat-expansion-panel,
+mat-expansion-panel-header {
+  background-color: rgba(0, 0, 0, 0.03);
+  font-weight: 500;
+  font-size: 14x;
+}
+
+::ng-deep .mat-expansion-panel-body {
+  padding: 0 !important;
+}
+
+::ng-deep .mat-list-single-selected-option {
+  color: blue !important;
+}
+
+.mat-list-item,
+.mat-list-option {
+  font-size: 12px;
+  font-family: Roboto, Helvetica Neue, sans-serif;
+}
+
+.active {
+  text-decoration: none;
+  color: blue;
+}
+
+.searchField {
+  width: 95%;
+  margin-top: 15px;
+  margin-left: 10px;
+}

@@ -1,0 +1,60 @@
+<h3 class="title">Global Environment</h3>
+<div class="global-environment-container mat-elevation-z8">
+  <mat-toolbar class="toolBar">
+    <div class="buttonGrp">
+      <div class="pull-right">
+        <button mat-button (click)="onEdit()" [disabled]="isEditMode || isReadOnly">
+          <mat-icon class="toolBarIcon">edit</mat-icon><span>Edit</span>
+        </button>
+        <button mat-button (click)="onUpdate()" [disabled]="!isEditMode">
+          <mat-icon class="toolBarIcon">save</mat-icon><span>Update</span>
+        </button>
+        <button mat-button (click)="onCancel()" [disabled]="!isEditMode">
+          <mat-icon class="toolBarIcon">close</mat-icon><span>Cancel</span>
+        </button>
+        <button mat-button (click)="onSync()">
+          <mat-icon class="toolBarIcon">refresh</mat-icon><span>Sync</span>
+        </button>
+      </div>
+    </div>
+  </mat-toolbar>
+  <div class="table-container">
+    <table mat-table matSort [dataSource]="globalEnvDataSrc">
+      <ng-container matColumnDef="NAME">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>NAME</th>
+        <td mat-cell *matCellDef="let element">{{ element.NAME }}</td>
+      </ng-container>
+      <ng-container matColumnDef="TYPE">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>TYPE</th>
+        <td mat-cell *matCellDef="let element">{{ element.TYPE }}</td>
+      </ng-container>
+      <ng-container matColumnDef="VALUE">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>VALUE</th>
+        <td mat-cell *matCellDef="let element; let i = index">
+          <ng-container *ngIf="isEditMode && i==selectedRow && element.VALUE_LIST==null;else dropdownBlock">
+            <mat-form-field class="formGrp">
+              <input *ngIf="element.TYPE == 'C'" matInput #inputEle [(value)]="element.VALUE" required>
+              <input *ngIf="element.TYPE == 'N'" type="number" [min]="currentMinVal" [max]="currentMaxVal" matInput
+                #inputEle [(value)]="element.VALUE" required>
+            </mat-form-field>
+          </ng-container>
+          <ng-template #dropdownBlock>
+            <ng-container *ngIf="isEditMode && i==selectedRow && element.VALUE_LIST!=null;else defautBlock">
+              <mat-form-field class="formGrp">
+                <mat-select [(value)]="element.VALUE">
+                  <mat-option *ngFor="let subVal of element.VALUE_LIST" [value]="subVal">{{subVal}}</mat-option>
+                </mat-select>
+              </mat-form-field>
+            </ng-container>
+          </ng-template>
+          <ng-template #defautBlock>
+            <span>{{ element.VALUE }}</span>
+          </ng-template>
+        </td>
+      </ng-container>
+      <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+      <tr mat-row *matRowDef="let row; let i = index; columns: displayedColumns" (click)="onRowSelect(row,i)"
+        [class.rowSelected]="i === selectedRow && !isEditMode" class="tableRow"></tr>
+    </table>
+  </div>
+</div>
