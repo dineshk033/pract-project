@@ -1,57 +1,123 @@
-<mat-form-field class="searchField" appearance="outline">
-  <mat-label>Search</mat-label>
-  <input
-    matInput
-    type="text"
-    (input)="menuSearch($event)"
-    [(ngModel)]="searchValue"
-  />
-  <button
-    mat-button
-    *ngIf="searchValue; else elseIcon"
-    matSuffix
-    mat-icon-button
-    aria-label="Clear"
-    (click)="searchValue = ''"
+<div class="main-container" [class.mobile-container]="mobileQuery.matches">
+  <mat-toolbar class="headerBar">
+    <button mat-icon-button (click)="snav.toggle(); toggleIcon = !toggleIcon">
+      <!-- <mat-icon>{{
+        toggleIcon ? "arrow_back_ios" : "arrow_forward_ios"
+      }}</mat-icon> -->
+      <mat-icon>menu</mat-icon>
+    </button>
+    <div></div>
+    <svg class="logo" viewBox="0 -10 167 57" xmlns="http://www.w3.org/2000/svg">
+      <g fill="none" fill-rule="evenodd">
+        <g fill="#FFF">
+          <path
+            d="M84.297 37.027L99.851 3.74a.89.89 0 01.835-.518c.358-.015.69.19.834.518l15.573 33.288h3.485L104.393 2.39a4.08 4.08 0 00-3.707-2.374 4.08 4.08 0 00-3.708 2.374L80.793 37.027h3.504zM49.778 33.883a.947.947 0 01-.946-.961V.04H45.68v32.882a4.082 4.082 0 001.194 2.901 4.102 4.102 0 002.904 1.204h25.009v-3.144h-25.01zM33.445 37.027h4.078L21.821 16.98 35.095.04H31.09L4.765 33.643a.798.798 0 01-.964.277.832.832 0 01-.575-.814V.04H.074v33.066a3.94 3.94 0 002.707 3.792c.43.145.881.22 1.335.222a3.952 3.952 0 003.133-1.535l12.57-16.053 13.626 17.495z"
+          ></path>
+        </g>
+        <path
+          class="logo-plus"
+          fill="#00A7E1"
+          d="M129.847.04h37.078v36.987h-37.078z"
+        ></path>
+        <path
+          fill="#FFF"
+          d="M164.145 16.795h-14.016V2.815h-3.485v13.98h-14.016v3.477h14.016v13.981h3.485V20.272h14.016z"
+        ></path>
+      </g>
+    </svg>
+    <h3 class="headerText">MACH Central (Klarity)</h3>
+    <div class="header_mainContent"></div>
+    <mat-icon style="margin-right: 5px;">help</mat-icon>
+    <button type="button" style="margin-right: 20px;" mat-icon-button>
+      <mat-icon>account_circle</mat-icon>
+    </button>
+  </mat-toolbar>
+  <mat-sidenav-container
+    class="sidenav-container"
+    [style.marginTop.px]="mobileQuery.matches ? 56 : 0"
   >
-    <mat-icon>close</mat-icon>
-  </button>
-  <ng-template #elseIcon><mat-icon matSuffix>search</mat-icon></ng-template>
-</mat-form-field>
-<mat-accordion *ngIf="!searchValue; else elseNavList" class="sidenav">
-  <ng-container *ngFor="let item of menuItem; let first = first">
-    <mat-expansion-panel [expanded]="first">
-      <mat-expansion-panel-header [expandedHeight]="'48px'">
-        <mat-panel-title>
-          {{ item.name }}
-        </mat-panel-title>
-      </mat-expansion-panel-header>
-      <mat-nav-list>
-        <mat-list-item
-          *ngFor="let child of item['children']"
-          [routerLink]="child['navigation']"
-          routerLinkActive="active"
+    <mat-sidenav
+      #snav
+      class="sidenav"
+      [opened]="true"
+      [mode]="mobileQuery.matches ? 'over' : 'side'"
+      [fixedInViewport]="mobileQuery.matches"
+      fixedTopGap="56"
+    >
+      <mat-form-field class="searchField" appearance="outline">
+        <mat-label>Search</mat-label>
+        <input
+          matInput
+          type="text"
+          (input)="menuSearch($event)"
+          [formControl]="searchValue"
+        />
+        <button
+          mat-button
+          *ngIf="searchValue.value; else elseIcon"
+          matSuffix
+          mat-icon-button
+          aria-label="Clear"
+          (click)="clearSearch()"
         >
-          {{ child.name }}
-        </mat-list-item>
-      </mat-nav-list>
-    </mat-expansion-panel>
-  </ng-container>
-</mat-accordion>
-<ng-template #elseNavList>
-  <mat-card style="padding: 0 !important; background-color: whitesmoke;">
-    <mat-nav-list *ngIf="searchMenuItem.length > 0; else noRecord">
-      <mat-list-item
-        *ngFor="let menu of searchMenuItem"
-        [routerLink]="menu['navigation']"
-        routerLinkActive="active"
-        (click)="searchValue = ''"
+          <mat-icon>close</mat-icon>
+        </button>
+        <ng-template #elseIcon>
+          <mat-icon matSuffix>search</mat-icon>
+        </ng-template>
+      </mat-form-field>
+
+      <mat-accordion
+        *ngIf="!searchValue.value; else elseNavList"
+        class="sidenav"
       >
-        {{ menu.name }}
-      </mat-list-item>
-    </mat-nav-list>
-    <ng-template #noRecord>
-      <div style="padding: 10px 15px;">No Match</div>
-    </ng-template>
-  </mat-card>
-</ng-template>
+        <ng-container *ngFor="let item of menuItem; let first = first">
+          <mat-expansion-panel [expanded]="first">
+            <mat-expansion-panel-header [expandedHeight]="'48px'">
+              <mat-panel-title class="title">
+                {{ item.name }}
+              </mat-panel-title>
+            </mat-expansion-panel-header>
+            <mat-nav-list>
+              <mat-list-item
+                *ngFor="let child of item['children']"
+                [routerLink]="child['navigation']"
+                routerLinkActive="active"
+              >
+                {{ child.name }}
+              </mat-list-item>
+            </mat-nav-list>
+          </mat-expansion-panel>
+        </ng-container>
+      </mat-accordion>
+      <ng-template #elseNavList>
+        <mat-card style="padding: 0 !important; background-color: whitesmoke;">
+          <mat-nav-list *ngIf="searchMenuItem.length > 0; else noRecord">
+            <mat-list-item
+              *ngFor="let menu of searchMenuItem"
+              [routerLink]="menu['navigation']"
+              routerLinkActive="active"
+              (click)="clearSearch()"
+            >
+              {{ menu.name }}
+            </mat-list-item>
+          </mat-nav-list>
+          <ng-template #noRecord>
+            <div style="padding: 10px 15px;">No Match</div>
+          </ng-template>
+        </mat-card>
+      </ng-template>
+    </mat-sidenav>
+    <mat-sidenav-content>
+      <div class="container">
+        <router-outlet></router-outlet>
+      </div>
+    </mat-sidenav-content>
+  </mat-sidenav-container>
+  <mat-toolbar class="mainFooter">
+    <div class="f-10">
+      Copyright &copy; 2020 by KLA Corporation. All Rights Reserved
+    </div>
+    <div class="title">Version 3.6.1.16.0</div>
+  </mat-toolbar>
+</div>
